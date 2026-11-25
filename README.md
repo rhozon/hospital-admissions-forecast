@@ -17,6 +17,7 @@ pytest -v                                    # unit tests, no network needed
 python -m admissions.cli backtest            # 27 states x 33 origins x 4 models, a few minutes
 python -m admissions.cli forecast            # next 12 months for every state
 python -m admissions.cli figures             # charts, in English and Portuguese
+python -m admissions.cli export data.json    # data for the interactive page
 python -m admissions.cli fetch               # optional: refresh data/ from DATASUS TabNet
 ```
 
