@@ -4,6 +4,7 @@
     python -m admissions.cli backtest    # rolling-origin backtest into results/
     python -m admissions.cli forecast    # next 12 months for every state
     python -m admissions.cli figures     # charts into results/figures/
+    python -m admissions.cli export PATH # data for the interactive page
 """
 from __future__ import annotations
 
@@ -126,6 +127,12 @@ def cmd_figures(_):
     print("figures in", RESULTS / "figures")
 
 
+def cmd_export(a):
+    from .site import export_site_json
+    p = export_site_json(a.path)
+    print(f"{p}: {p.stat().st_size / 1024:.0f} KB")
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="admissions")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -137,6 +144,9 @@ def main(argv=None):
     b.set_defaults(fn=cmd_backtest)
     sub.add_parser("forecast").set_defaults(fn=cmd_forecast)
     sub.add_parser("figures").set_defaults(fn=cmd_figures)
+    e = sub.add_parser("export")
+    e.add_argument("path")
+    e.set_defaults(fn=cmd_export)
     a = p.parse_args(argv)
     a.fn(a)
 
